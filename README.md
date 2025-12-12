@@ -1,57 +1,49 @@
 # Vocabulary Builder Bot
 
-A personal Telegram bot for creating Quizlet flashcards for learning English and German using LLM-powered analysis.
-
-## Features
-
-- 🤖 Process words/phrases using AI to create contextual flashcards
-- 🇬🇧 English vocabulary with focus on phrasal verbs and collocations (B1-B2/FCE level)
-- 🇩🇪 German vocabulary with focus on verb conjugations, noun gender, and plurals (A2 level)
-- 📊 Track statistics on cards and unique words
-- 📥 Export CSV files compatible with Quizlet import
-
-## Setup
-
-1. **Install dependencies:**
-   ```bash
-   uv sync
-   ```
-
-2. **Create `.env` file:**
-   ```env
-   TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-   ALLOWED_USER_ID=your_telegram_user_id
-   OPENROUTER_API_KEY=your_openrouter_api_key
-   ```
-
-3. **Run the bot:**
-   ```bash
-   uv run python main.py
-   ```
+Telegram bot for creating Quizlet flashcards using LLM-powered analysis.
 
 ## Commands
 
-- `/start` — Welcome message and help
-- `/en <word>` — Add an English word (e.g., `/en useful`)
-- `/de <word>` — Add a German word (e.g., `/de aufgeben`)
-- `/dump_english` — Download English cards CSV and clear buffer
-- `/dump_german` — Download German cards CSV and clear buffer
-- `/stats` — View current statistics
+| Command | Description |
+|---------|-------------|
+| `/en <word>` | Add English word |
+| `/de <word>` | Add German word |
+| `/dump_english` | Export & clear English CSV |
+| `/dump_german` | Export & clear German CSV |
+| `/stats` | View statistics |
 
-## Usage
+## Local Setup
 
-Send a word with the language command:
-- `/en look forward to` — for English phrasal verbs
-- `/de die Methode` — for German nouns
+```bash
+cp .env.example .env   # Edit with your credentials
+uv sync
+uv run python main.py
+```
 
-The bot will:
-1. Analyze meanings and usage contexts
-2. Create 1-3 flashcards with fill-in-the-blank exercises
-3. Add cards to the buffer for later export
+## Docker Deployment (VPS)
 
-## CSV Format
+```bash
+# Clone and configure
+git clone <repo-url> && cd Vocabulary_builder
+cp .env.example .env   # Edit with your credentials
 
-The exported CSV follows Quizlet's import format:
-```csv
-"Task with gap _____","Answer"
+# Run
+docker compose up -d --build
+
+# Logs
+docker compose logs -f
+
+# Update
+git pull && docker compose up -d --build
+
+# Stop
+docker compose down
+```
+
+## Environment Variables
+
+```env
+TELEGRAM_BOT_TOKEN=your_token
+ALLOWED_USER_ID=your_telegram_id
+OPENROUTER_API_KEY=your_api_key
 ```

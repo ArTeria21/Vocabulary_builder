@@ -1,0 +1,34 @@
+services:
+  vocab-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vocabulary-builder-bot
+    restart: unless-stopped
+    
+    # Environment variables (use .env file or inline)
+    env_file:
+      - .env
+    
+    # Persist data between container restarts
+    volumes:
+      - ./data:/app/data
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Resource limits (adjust based on your VPS)
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+    
+    # Graceful shutdown timeout
+    stop_grace_period: 10s
+

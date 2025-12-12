@@ -177,12 +177,12 @@ class VocabularyBot:
             language_emoji = "🇬🇧" if language == "english" else "🇩🇪"
             language_name = language.capitalize()
 
-            response = f'Word "{word}"\n\n'
+            response = f'⚡️ Word "{word.capitalize()}"\n\n'
 
             if cards_added == 1:
                 response += f"Meaning:\n- {card.usage_examples[0].meaning}\n\n"
             else:
-                response += f"It has {cards_added} meanings:\n"
+                response += f"👨🏼‍🎓 It has {cards_added} meanings:\n"
                 for example in card.usage_examples:
                     response += f"- {example.meaning}\n"
                 response += "\n"

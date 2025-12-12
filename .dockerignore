@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.cursor/
+
+# Documentation (not needed in container)
+*.md
+!prompts/*.md
+Agents.md
+
+# Local data (mounted as volume)
+data/*.csv
+
+# Environment files (passed via docker-compose)
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# UV cache
+.uv/
+

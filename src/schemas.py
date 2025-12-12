@@ -33,10 +33,11 @@ class Card(BaseModel):
         ...,
         description="Short reasoning about the word/phrase, its meaning, usage example and context, etc. Can this word be used in different meanings? Are they truly distinct (homonyms) or just slight nuances? explicitly state: 'I will create X cards because...",
     )
-    amount_of_meanings: Annotated[int, Ge(1), Le(3)] = Field(
-        ..., description="Amount of useful meanings of the word/phrase, maximum 3"
+    amount_of_meanings: Annotated[int, Ge(1), Le(5)] = Field(
+        ...,
+        description="Amount of useful meanings of the word/phrase, maximum 5, but only if the word is a homonym or has significantly different grammatical usage",
     )
-    usage_examples: Annotated[List[UsageExample], MinLen(1), MaxLen(3)] = Field(
+    usage_examples: Annotated[List[UsageExample], MinLen(1), MaxLen(5)] = Field(
         ...,
         description="List of usage examples of the word/phrase in the real context for each meaning",
     )
