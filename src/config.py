@@ -3,9 +3,22 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    OPENROUTER_API_KEY: SecretStr = Field(..., env="OPENROUTER_API_KEY")
-    MODEL_ID: str = Field(default="x-ai/grok-4.1-fast")
+    """Application settings loaded from environment variables."""
+
+    # Telegram settings
+    TELEGRAM_BOT_TOKEN: SecretStr = Field(..., description="Telegram bot API token")
+    ALLOWED_USER_ID: int = Field(
+        ..., description="Telegram user ID allowed to use the bot"
+    )
+
+    # OpenRouter/LLM settings
+    OPENROUTER_API_KEY: SecretStr = Field(..., description="OpenRouter API key")
+    MODEL_ID: str = Field(default="x-ai/grok-4.1-fast", description="LLM model ID")
     OPENROUTER_BASE_URL: str = Field(default="https://openrouter.ai/api/v1")
+
+    # Data paths
+    ENGLISH_CSV_PATH: str = Field(default="data/english.csv")
+    GERMAN_CSV_PATH: str = Field(default="data/german.csv")
 
     class Config:
         env_file = ".env"
