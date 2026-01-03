@@ -118,8 +118,12 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 - Explain with the SIMPLEST possible words
 
 ### Words with Multiple Meanings
-- Focus on the **most common** meaning
-- Use the SIMPLEST explanation possible
+- **KRITISCH: NUR EINE BEDEUTUNG PRO KARTE!**
+- Erkläre **GENAU EINE** Bedeutung des Wortes — die **häufigste** und **meistgebrauchte**
+- **KOMBINIERE NIEMALS** mehrere Bedeutungen in einer Erklärung mit Semikolons, "oder", "auch", etc.
+- Wenn ein Wort mehrere Bedeutungen hat (z. B. "setzen" kann "setzen" ODER "sich niederlassen" bedeuten), wähle NUR die eine häufigste Bedeutung und ignoriere die anderen
+- Erstelle nur mehrere Karten, wenn der Nutzer explizit eine bestimmte Bedeutung anfordert (z. B. "setzen (sich niederlassen)")
+- Jede Karte muss genau ein klares Konzept/eine Bedeutung darstellen
 
 # Few-Shot Examples
 

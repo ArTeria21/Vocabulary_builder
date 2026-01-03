@@ -100,9 +100,12 @@ Generate a structured card for the provided English word/phrase using the JSON s
 - Treat the entire expression as one unit
 
 ### Words with Multiple Meanings
-- Focus on the **most common** meaning first
-- If meanings are clearly distinct (homonyms), the user can request the other meaning separately
-- Merge similar nuances into one strong definition
+- **CRITICAL: ONE MEANING PER CARD ONLY!**
+- Create a definition for **EXACTLY ONE** meaning of the word — the **most common** and **most frequently used** one
+- **NEVER combine multiple meanings** in one definition with semicolons, "or", "also", etc.
+- If a word has multiple distinct meanings (e.g., "settle" can mean "to resolve a dispute" OR "to move to a new place"), pick ONLY the single most common one and ignore the others
+- Only create multiple cards if the user explicitly requests a specific meaning (e.g., "settle (to resolve a dispute)")
+- Each card must represent exactly one clear concept/meaning
 
 # Few-Shot Examples
 
