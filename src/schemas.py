@@ -13,12 +13,22 @@ class Card(BaseModel):
 
     Structure:
     - is_exists: Whether the word exists in the target language
+    - normalized_term: The normalized (lemmatized) form of the word for saving to the card
     - definition, collocations, examples: Only populated if is_exists=True
     """
 
     is_exists: bool = Field(
         ...,
         description="Whether this word/phrase exists in the target language. Set to false for non-existent words, typos, or gibberish.",
+    )
+    normalized_term: str | None = Field(
+        default=None,
+        description=(
+            "The normalized (lemmatized) form of the word/phrase to be used as the term in the card. "
+            "For English: verbs in infinitive, nouns in singular form, etc. "
+            "For German: verbs in infinitive, nouns with article (der/die/das), etc. "
+            "Only populated if is_exists=True."
+        ),
     )
     definition: str | None = Field(
         default=None,
@@ -33,7 +43,7 @@ class Card(BaseModel):
         description="2-3 example sentences where the target word is replaced by '_____'. Example: 'He was too _____ to carry out his political program.' Only populated if is_exists=True.",
     )
 
-    @field_validator("definition", "collocations", "examples", mode="after")
+    @field_validator("normalized_term", "definition", "collocations", "examples", mode="after")
     @classmethod
     def validate_card_fields(cls, v: str | List[str] | None, info) -> str | List[str] | None:
         """If is_exists is True, all fields must be populated. If False, all must be None."""

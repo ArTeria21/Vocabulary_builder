@@ -405,10 +405,23 @@ class VocabularyBot:
         language_emoji = "🇬🇧" if pending.language == "english" else "🇩🇪"
         language_name = pending.language.capitalize()
 
-        await callback.message.edit_text(
-            f'✅ Card accepted: "{pending.word_identifier}"\n\n'
-            f"Added {cards_added} card for {language_name} {language_emoji}"
-        )
+        # Show normalized term if different from original input
+        normalized_term = pending.card.normalized_term
+        show_normalized = normalized_term and normalized_term != pending.word_identifier
+
+        if show_normalized:
+            message = (
+                f'✅ Card accepted: "{pending.word_identifier}"\n'
+                f'💾 Saved as: "{normalized_term}"\n\n'
+                f"Added {cards_added} card for {language_name} {language_emoji}"
+            )
+        else:
+            message = (
+                f'✅ Card accepted: "{pending.word_identifier}"\n\n'
+                f"Added {cards_added} card for {language_name} {language_emoji}"
+            )
+
+        await callback.message.edit_text(message)
 
         # Remove from pending
         del self._pending_cards[message_id]

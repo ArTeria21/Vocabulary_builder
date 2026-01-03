@@ -31,6 +31,26 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 
 ## Output Format Requirements
 
+### 0. The `normalized_term` Field (REQUIRED)
+- **This is the word/phrase that will be saved as the term in the card**
+- Normalize the word to its standard dictionary form:
+  - **Verbs**: Always in infinitive form (e.g., "ging" → "gehen", "war" → "sein", "gab auf" → "aufgeben")
+  - **Nouns**: In singular form WITH article (e.g., "Tische" → "der Tisch", "Männer" → "der Mann", "Frauen" → "die Frau")
+  - **Adjectives**: In base/positive form (e.g., "besser" → "gut", "größte" → "groß")
+  - **Phrasal verbs**: Verb in infinitive form (e.g., "gab auf" → "aufgeben", "wartete auf" → "warten auf", "sah vor" → "sehen vor")
+  - **Idioms/expressions**: Standard dictionary form (e.g., "das A und O", "die Katze im Sack kaufen")
+- This ensures cards are saved consistently regardless of the input form
+- The collocations and examples will use the original input form, but the `normalized_term` is what gets saved
+
+**Examples:**
+- Input "Mensa" → `normalized_term`: "die Mensa"
+- Input "Geist" → `normalized_term`: "der Geist"
+- Input "ging" → `normalized_term`: "gehen"
+- Input "Tische" → `normalized_term`: "der Tisch"
+- Input "gab auf" → `normalized_term`: "aufgeben"
+- Input "wartete auf" → `normalized_term`: "warten auf"
+- Input "das A und O" → `normalized_term`: "das A und O"
+
 ### 1. The `definition` Field
 - **EXTREMELY SIMPLE** definition in **GERMAN ONLY**
 - Use ONLY basic words that A1-A2 students know (e.g., machen, gehen, essen, gut, schlimm, groß, klein, Zeit, Tag, haben, sein)
@@ -109,6 +129,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": false,
+  "normalized_term": null,
   "definition": null,
   "collocations": null,
   "examples": null
@@ -121,6 +142,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": true,
+  "normalized_term": "die Mensa",
   "definition": "n. die. Man isst dort. Die Speise ist billig. (Syn: Kantine)",
   "collocations": [
     "in der _____ essen",
@@ -139,6 +161,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": true,
+  "normalized_term": "der Geist",
   "definition": "n. der. Man kann denken. (Syn: Verstand, Kopf)",
   "collocations": [
     "ein guter _____",
@@ -157,6 +180,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": true,
+  "normalized_term": "aufgeben",
   "definition": "v. aufhören. Nicht mehr machen. (trennbares Verb, Syn: aufhören)",
   "collocations": [
     "die Hoffnung _____",
@@ -175,6 +199,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": true,
+  "normalized_term": "warten auf",
   "definition": "v. Man wartet. (auf + Akk, Syn: abwarten)",
   "collocations": [
     "_____ den Bus",
@@ -193,6 +218,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": true,
+  "normalized_term": "entschlossen",
   "definition": "adj. Jemand entscheidet schnell. (Syn: bestimmt)",
   "collocations": [
     "ein _____er Mensch",
@@ -211,6 +237,7 @@ Generate a structured card for the provided German word/phrase using the JSON sc
 ```json
 {
   "is_exists": true,
+  "normalized_term": "das A und O",
   "definition": "expression. Das ist sehr wichtig. (Syn: das Wichtigste)",
   "collocations": [
     "das ist das _____",

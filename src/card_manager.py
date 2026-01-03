@@ -195,8 +195,8 @@ class CardManager:
         Add a card to the specified language buffer and update history.
 
         Args:
-            term: The target word/phrase (Side 1 of the card).
-            card: The Card object with definition, collocations, and examples.
+            term: The original target word/phrase input by the user.
+            card: The Card object with normalized_term, definition, collocations, and examples.
             language: The language buffer to add to ('english' or 'german').
 
         Returns:
@@ -206,23 +206,26 @@ class CardManager:
             self._english_cards if language == "english" else self._german_cards
         )
 
+        # Use normalized_term from the card (lemmatized form) instead of original input
+        normalized_term = card.normalized_term if card.normalized_term else term
+
         definition = self._format_definition(card)
-        cards_list.append((term, definition))
+        cards_list.append((normalized_term, definition))
 
         # Add to history (always, even if it's a duplicate - for tracking)
         history_entry = WordHistoryEntry(
-            word=term,
+            word=normalized_term,
             added_at=datetime.now().isoformat(),
             definition=card.definition,
         )
 
         if language == "english":
             self._english_unique_words += 1
-            self._english_history[term] = history_entry
+            self._english_history[normalized_term] = history_entry
             self._save_history("english")
         else:
             self._german_unique_words += 1
-            self._german_history[term] = history_entry
+            self._german_history[normalized_term] = history_entry
             self._save_history("german")
 
         return 1

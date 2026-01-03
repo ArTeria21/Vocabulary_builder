@@ -30,6 +30,25 @@ Generate a structured card for the provided English word/phrase using the JSON s
 
 ## Output Format Requirements
 
+### 0. The `normalized_term` Field (REQUIRED)
+- **This is the word/phrase that will be saved as the term in the card**
+- Normalize the word to its standard dictionary form:
+  - **Verbs**: Always in infinitive form (e.g., "ran" → "run", "ate" → "eat", "was" → "be")
+  - **Nouns**: In singular form (e.g., "tables" → "table", "children" → "child")
+  - **Adjectives**: In base/positive form (e.g., "better" → "good", "biggest" → "big")
+  - **Phrasal verbs**: Verb in infinitive form (e.g., "relied on" → "rely on", "ran out of" → "run out of", "looking forward to" → "look forward to")
+  - **Idioms/expressions**: Standard dictionary form (e.g., "think outside the box", "break the ice", "under the weather")
+- This ensures cards are saved consistently regardless of the input form
+- The collocations and examples will use the original input form, but the `normalized_term` is what gets saved
+
+**Examples:**
+- Input "ran" → `normalized_term`: "run"
+- Input "tables" → `normalized_term`: "table"
+- Input "relied on" → `normalized_term`: "rely on"
+- Input "ran out of" → `normalized_term`: "run out of"
+- Input "thinking outside the box" → `normalized_term`: "think outside the box"
+- Input "broke the ice" → `normalized_term`: "break the ice"
+
 ### 1. The `definition` Field
 - Clear, simple definition in **ENGLISH ONLY**
 - Include synonyms in parentheses: `(Syn: synonym1, synonym2)`
@@ -93,6 +112,7 @@ Generate a structured card for the provided English word/phrase using the JSON s
 ```json
 {
   "is_exists": true,
+  "normalized_term": "indecisive",
   "definition": "adj. Not able to make decisions quickly and effectively. (Syn: hesitant, unsure)",
   "collocations": [
     "a weak and _____ man",
@@ -111,6 +131,7 @@ Generate a structured card for the provided English word/phrase using the JSON s
 ```json
 {
   "is_exists": true,
+  "normalized_term": "think outside the box",
   "definition": "expression. To think imaginatively using new ideas instead of traditional or expected ideas. (Syn: brainstorm, innovate creatively)",
   "collocations": [
     "need to _____ to find solutions",
@@ -123,30 +144,32 @@ Generate a structured card for the provided English word/phrase using the JSON s
 }
 ```
 
-### Example 3: Verb
-**Input:** "rely on"
+### Example 3: Verb (showing normalization)
+**Input:** "ran"
 **Output:**
 ```json
 {
   "is_exists": true,
-  "definition": "v. To depend on or trust someone or something. (Syn: depend on, count on, trust)",
+  "normalized_term": "run",
+  "definition": "v. To move at a speed faster than walking. (Syn: sprint, dash, jog)",
   "collocations": [
-    "_____ someone for help",
-    "can always _____ him"
+    "_____ quickly",
+    "_____ a marathon"
   ],
   "examples": [
-    "I cannot _____ this old car for my daily commute.",
-    "She can always _____ her friends when she needs support."
+    "She _____ every morning before work.",
+    "He _____ to catch the bus."
   ]
 }
 ```
 
-### Example 4: Noun
+### Example 4: Noun (showing normalization)
 **Input:** "obstacle"
 **Output:**
 ```json
 {
   "is_exists": true,
+  "normalized_term": "obstacle",
   "definition": "n. Something that blocks one's way or prevents progress. (Syn: barrier, hurdle, impediment)",
   "collocations": [
     "overcome every _____",
