@@ -4,6 +4,8 @@ __pycache__
 
 # CSV data files (but keep the directory)
 data/*.csv
+data/*.txt
+data/*.json
 !data/.gitkeep
 
 Agents.md

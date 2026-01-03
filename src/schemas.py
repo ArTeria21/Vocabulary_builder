@@ -1,43 +1,46 @@
 from typing import Annotated, List, Literal
 
 from annotated_types import Ge, Le, MaxLen, MinLen
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 # Type alias for language
 Language = Literal["english", "german"]
 
 
-class UsageExample(BaseModel):
-    """Schema for a usage example of a word or a phrase."""
-
-    meaning: str = Field(
-        ..., description="Explain this meaning of the word/phrase in the usage example"
-    )
-    example: str = Field(
-        ..., description="Usage example of the word/phrase in the real context"
-    )
-    task_sentence: str = Field(
-        ...,
-        description="The example sentence with '_____' instead of the word/phrase",
-    )
-    answer_keyword: str = Field(
-        ...,
-        description="The fragment that needs to be inserted into the gap",
-    )
-
-
 class Card(BaseModel):
-    """Schema for a card with a new word or a phrase and its usage examples for Quizlet."""
+    """
+    Schema for a Quizlet card using Contextual Immersion method.
 
-    reasoning: str = Field(
+    Structure:
+    - is_exists: Whether the word exists in the target language
+    - definition, collocations, examples: Only populated if is_exists=True
+    """
+
+    is_exists: bool = Field(
         ...,
-        description="Short reasoning about the word/phrase, its meaning, usage example and context, etc. Can this word be used in different meanings? Are they truly distinct (homonyms) or just slight nuances? explicitly state: 'I will create X cards because...",
+        description="Whether this word/phrase exists in the target language. Set to false for non-existent words, typos, or gibberish.",
     )
-    amount_of_meanings: Annotated[int, Ge(1), Le(5)] = Field(
-        ...,
-        description="Amount of useful meanings of the word/phrase, maximum 5, but only if the word is a homonym or has significantly different grammatical usage",
+    definition: str | None = Field(
+        default=None,
+        description="Clear, simple definition in the target language with synonyms in parentheses. Only populated if is_exists=True. Example: 'adj. Not able to make decisions quickly and effectively. (Syn: hesitant, unsure)'",
     )
-    usage_examples: Annotated[List[UsageExample], MinLen(1), MaxLen(5)] = Field(
-        ...,
-        description="List of usage examples of the word/phrase in the real context for each meaning",
+    collocations: Annotated[List[str], MinLen(2), MaxLen(3)] | None = Field(
+        default=None,
+        description="2-3 common collocations/phrases containing the word. Each should have a gap: 'a weak and _____ man', 'proved to be _____'. Only populated if is_exists=True.",
     )
+    examples: Annotated[List[str], MinLen(2), MaxLen(3)] | None = Field(
+        default=None,
+        description="2-3 example sentences where the target word is replaced by '_____'. Example: 'He was too _____ to carry out his political program.' Only populated if is_exists=True.",
+    )
+
+    @field_validator("definition", "collocations", "examples", mode="after")
+    @classmethod
+    def validate_card_fields(cls, v: str | List[str] | None, info) -> str | List[str] | None:
+        """If is_exists is True, all fields must be populated. If False, all must be None."""
+        if info.data.get("is_exists"):
+            if v is None:
+                raise ValueError("Field must be populated when is_exists=True")
+        else:
+            if v is not None:
+                raise ValueError("Field must be None when is_exists=False")
+        return v

@@ -1,4 +1,4 @@
-"""LLM-based card generation module."""
+"""LLM-based card generation module using Contextual Immersion method."""
 
 import asyncio
 import logging
@@ -49,13 +49,18 @@ async def build_card(word: str, language: Language, settings: Settings) -> Card:
     """
     Build a vocabulary card for the given word using LLM with retry logic.
 
+    Uses the Contextual Immersion method:
+    - No translations to Russian/native language
+    - Definition, collocations, and examples all in the target language
+    - Gap-fill examples for active recall
+
     Args:
         word: The word or phrase to create a card for.
         language: The language of the word ('english' or 'german').
         settings: Application settings with API credentials.
 
     Returns:
-        Card object with usage examples and meanings.
+        Card object with definition, collocations, and gap-fill examples.
 
     Raises:
         CardBuildError: If all retry attempts fail.
@@ -140,7 +145,7 @@ if __name__ == "__main__":
 
     async def main() -> None:
         result = await build_card(
-            word="Разбери пожалуйста глагол Look, как фразовый глагол для экзамена FCE",
+            word="indecisive",
             language="english",
             settings=Settings(),
         )

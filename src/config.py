@@ -16,9 +16,9 @@ class Settings(BaseSettings):
     MODEL_ID: str = Field(default="x-ai/grok-4.1-fast", description="LLM model ID")
     OPENROUTER_BASE_URL: str = Field(default="https://openrouter.ai/api/v1")
 
-    # Data paths
-    ENGLISH_CSV_PATH: str = Field(default="data/english.csv")
-    GERMAN_CSV_PATH: str = Field(default="data/german.csv")
+    # Data paths (output files in Quizlet Custom Import format .txt)
+    ENGLISH_CSV_PATH: str = Field(default="data/english.txt")
+    GERMAN_CSV_PATH: str = Field(default="data/german.txt")
 
     class Config:
         env_file = ".env"
